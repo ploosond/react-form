@@ -1,64 +1,66 @@
 import React, { useState } from "react";
 
-export default function Form() {
+function Form() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [gender, setGender] = useState("");
-  const [phone, setPhone] = useState("");
+  const [people, setPeople] = useState([]);
 
   const handleClick = (e) => {
     e.preventDefault();
-    console.log(name, email, gender, phone);
+    if (name && email) {
+      const person = {
+        id: new Date().getTime.toString(),
+        name: name,
+        email: email,
+      };
+      setPeople((people) => {
+        return [...people, person];
+      });
+      setName("");
+      setEmail("");
+    } else {
+      console.log("no inputs yet");
+    }
   };
+
   return (
-    <>
-      <article>
-        <form>
-          <div>
-            <label htmlFor="name">Name: </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+    <article>
+      <form className="form">
+        <div className="form-control">
+          <label htmlFor="name">Name: </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="form-control">
+          <label htmlFor="email">Email: </label>
+          <input
+            type="text"
+            id="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <button type="submit" onClick={handleClick}>
+          add person
+        </button>
+      </form>
+      {people.map((person) => {
+        const { id, name, email } = person;
+        return (
+          <div className="item" key={id}>
+            <h4>{name}</h4>
+            <p>{email}</p>
           </div>
-          <div>
-            <label htmlFor="email">Email: </label>
-            <input
-              type="text"
-              id="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="gender">Gender: </label>
-            <input
-              type="text"
-              id="gender"
-              name="gender"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="phone">Phone: </label>
-            <input
-              type="text"
-              id="phone"
-              name="phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          </div>
-          <button type="submit" onClick={handleClick}>
-            Add person
-          </button>
-        </form>
-      </article>
-    </>
+        );
+      })}
+    </article>
   );
 }
+
+export default Form;
